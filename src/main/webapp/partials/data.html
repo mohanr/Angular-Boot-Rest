@@ -1,0 +1,42 @@
+<!--<style>
+  .my-input {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    background: transparent;
+  }
+  .my-input.ng-invalid {
+    color:white;
+    background: red;
+  }
+</style>-->
+    <form class="form-horizontal">
+    <div class="control-group">
+		<label class="control-label">Genre</label>
+		<div class="controls">
+			<input type="text" type="book.type" ng-model="editablegenre" placeholder={{editablegenre}} value={{editablegenre}} class="input-xlarge" id="genre" rel="popover">
+		</div>
+	</div>
+
+
+	<div class="control-group">
+		<label class="control-label">Title</label>
+		<div class="controls">
+			<input type="text" ng-model="editabletitle" placeholder={{editabletitle}} value={{editabletitle}} class="input-xlarge" id="title" rel="popover">
+		</div>
+	</div>
+
+
+	<div class="control-group">
+		<label class="control-label">Author</label>
+		<div class="controls">
+			<input type="text" ng-model="editableauthor" ng-pattern="/^([a-zA-Z]+\s)*[a-zA-Z]+$/" value={{editableauthor}} placeholder={{editableauthor} class="input-xlarge" id="author" rel="popover">
+		</div>
+	</div>
+
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+ 				<button type="submit" ng-click="saveData()" class="btn btn-success">submit</button>
+            </div>
+        </div>
+    </form>
+
