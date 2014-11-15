@@ -1,12 +1,12 @@
 package rest.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +23,8 @@ public class ItemManagementController {
 
 	    private static final Logger LOGGER = LoggerFactory.getLogger(ItemManagementController.class);
 		
-	    private MemberService service;//Not injected and used now
+	    @Autowired private MemberService service;
 
-        ArrayList<Book> books = new ArrayList<>();
 
 	    
 	    public ItemManagementController(final MemberService service) {
@@ -33,39 +32,34 @@ public class ItemManagementController {
 	    }
 
 	    public ItemManagementController() {
-	        books.add(new Book("Science Fiction","Pandora\'s star","Peter F. Hamilton",1));
-	    	books.add(new Book("Science Fiction","Absolution Gap","Alastair Reynolds",2));
 
 	    }
 
 	    /* No Validator is configured */
+	    /**http://www.amundsen.com/blog/archives/1063
+	     * Mapping CRUD operation to HTTP is not intended by the Rest
+	     * specification. So POST is acceptable.
+	     * */
 	    @RequestMapping(value = "/editbook", method = RequestMethod.POST)
 	    public  void editBook(@RequestBody @Valid final Book book) {
-	        LOGGER.debug("Received request to edit " + book);
-	        LOGGER.debug("Replaced the old value " + books.set(book.getId() - 1, book));
-	        LOGGER.debug("There are [" + books.size() + "] books");
+	    	service.editBook(book);
 	    }
 	    
 	    /* No Validator is configured */
 	    @RequestMapping(value = "/addbook", method = RequestMethod.POST)
 	    public  void createBook(@RequestBody @Valid final Book book) {
-	        LOGGER.debug("Received request to create " + book);
-	        book.setId(books.size() + 1);
-	        LOGGER.debug("Added the  value " + books.add(book));
-	        LOGGER.debug("There are [" + books.size() + "] books");
+	    	service.createBook(book);
 	    }
 
 	    @RequestMapping(value = "/books", method = RequestMethod.GET)
 	    public @ResponseBody List<Book> listBooks() {
-	        LOGGER.debug("List all books");
-	        return books;
+	    	return service.listBooks();
 	    }
 
 	    /* No Validator is configured */
 	    @RequestMapping(value = "/deletebook/{id}", method = RequestMethod.DELETE)
 	    public void  deleteBook(@PathVariable String id) {
-	        LOGGER.debug("Index of value to be Deleted  " + id);
-	        LOGGER.debug("Deleted  old value " + books.remove(Integer.parseInt(id)));
+	        service.remove(id);
 	    }
 
 	    @ExceptionHandler

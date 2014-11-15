@@ -1,7 +1,7 @@
 'use strict';
 
 
-var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
+var librarysystemcontroller = angular.module('librarysystemcontroller',['ngTable']);
 
 	librarysystemcontroller.controller('EmptyCtrl', ['$rootScope', '$scope', '$routeParams', '$http',
 		function($rootScope, $scope, $routeParams, $http) {
@@ -15,17 +15,18 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
 	                                      'Library',
 	                                      'EditBookService',
 	                                      '$http',
+	                                      '$rootScope',
 	                                      function($scope,
 	                                               Library,
 	                                               EditBookService,
-	                                               $http) {
+	                                               $http,
+	                                               $rootScope) {
      	console.log( 'SearchListCtrl' )
      	$scope.theDate  = new Date();
      	$scope.titleFilter = null;
      	var result = Library.query();
         console.log( result )
 	    $scope.books = result;
-        
         /*This will be called only if it is the current controller in the surrounding div*/
 		$scope.editBook = function (editableBook){
 	  		EditBookService.editBookService(editableBook);
@@ -51,7 +52,15 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
 				});
   		}
   		
-        
+  		$scope.$on('refresh',function($event) {
+  			// trigger the ajax call.Bring from the central repository
+  			//to see the latest changes.
+  			console.log('Refresh table');
+	     	var result = Library.query();
+	        console.log( result )
+		    $scope.books = result;
+		    //$scope.tableview.reload();
+  		});
 	}]); 
     
     
@@ -106,13 +115,14 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
                                                          '$routeParams',
                                                          '$location',
                                                          '$http',
+                                                         '$rootScope',
   function($scope,
            EditBookService,
            $routeParams,
            $location,
-           $http) {
+           $http,
+           $rootScope) {
  		
-
        		if($routeParams.bookId != null){
 	 		    $scope.bookId = $routeParams.bookId;
     			getEditableBookService();
@@ -128,27 +138,13 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
 		        $scope.editablegenre = editablebookdetails.genre;
 		        $scope.editableauthor = editablebookdetails.author;
 		        $scope.editabletitle = editablebookdetails.title;
+		        
 		    }
     		
 		      /*Move to a factory/service*/
-		    $scope.saveData = function() {
-		      /*$scope.genreRequired = '';
-		      $scope.titleRequired = '';
-		      $scope.authorRequired = '';
-		 
-		      if (!$scope.booktype) {
-		        $scope.genreRequired = 'Genre Required';
-		      }
-		 
-		      if (!$scope.bookname) {
-		        $scope.titleRequired = 'Title Required';
-		      }
-		 
-		      if (!$scope.bookwriter) {
-		        $scope.authorRequired = 'Author Required';
-		      }*/
+		    $scope.saveData = function(validity) {
  
-      
+ 			console.log(validity);     
       		if($routeParams.bookId == null){
       
 			      console.log("BookAdditionCtrl[%s][%s][%s]",
@@ -197,6 +193,8 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
 							console.log('error editing book: data = ' , data);
 						});
       		}
+      		console.log('Broadcast');
+      		$rootScope.$broadcast('refresh');
     };
     
      /*Move to a factory/service*/
@@ -205,21 +203,21 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',[]);
 	                   $scope.editablegenre,
 	                   $scope.editableauthor,
 	                   $scope.editabletitle);
-	      /*$scope.genreRequired = '';
+	      $scope.genreRequired = '';
 	      $scope.titleRequired = '';
 	      $scope.authorRequired = '';
 	 
-	      if (!$scope.booktype) {
+	      if (!$scope.editablegenre) {
 	        $scope.genreRequired = 'Genre Required';
 	      }
 	 
-	      if (!$scope.bookname) {
+	      if (!$scope.editabletitle) {
 	        $scope.titleRequired = 'Title Required';
 	      }
 	 
-	      if (!$scope.bookwriter) {
+	      if (!$scope.editableauthor) {
 	        $scope.authorRequired = 'Author Required';
-	      }*/
+	      }
       
 	      $http.post('/addbook', {
 						"genre": $scope.editablegenre

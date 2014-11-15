@@ -18,7 +18,6 @@ libraryServices.factory('Library', ['$resource',
 libraryServices.factory('EditBookService',[ function() {
   var books = [];
   var EditBookService = {};
-
  /*
  	We are not editing multiple selections
  */
@@ -30,6 +29,10 @@ libraryServices.factory('EditBookService',[ function() {
 	EditBookService.getEditableBookService = function() {
 	         //console.log( books.pop()); //Don't pop if  needed later.
 	         return books;
+	};
+
+	EditBookService.getTableView = function() {
+	         return tableview;
 	};
 	
 	return EditBookService;
