@@ -1,7 +1,7 @@
 'use strict';
 
 
-var module = angular.module('librarysystem',['ngRoute','librarysystemcontroller','libraryServices','libraryFilters'])
+var module = angular.module('librarysystem',['ngRoute','librarysystemcontroller','libraryServices'])
 .config(['$routeProvider',
 	function($routeProvider) {
  		$routeProvider.

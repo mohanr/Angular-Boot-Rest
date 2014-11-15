@@ -31,9 +31,6 @@ libraryServices.factory('EditBookService',[ function() {
 	         return books;
 	};
 
-	EditBookService.getTableView = function() {
-	         return tableview;
-	};
 	
 	return EditBookService;
 }]);
