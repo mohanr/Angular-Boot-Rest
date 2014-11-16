@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'Angular-Boot-Rest'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/libs-release" }
+}
+
+task ('cleanTask',type:Delete){
+	FileTree tree = fileTree(dir: '/Users/radhakrishnan/Documents/Application-Development/Angular-Boot-Rest/complete/src/main/webapp')
+	//tree.each {File file ->
+		//println file
+	//}
+	FileTree tree1 = fileTree(dir: '/Users/radhakrishnan/Documents/Application-Development/Angular-Boot-Rest/complete/src/main/java/rest/controller')
+    delete += tree1.include('**/*')
+    delete += tree.include('**/*')
+	println 'Cleaned'
+}
+
+task ('copytask',type:Copy) {
+	from '/Users/radhakrishnan/Documents/eclipse/workspace/Boot-Rest-Angular/src/main/webapp/WEB-INF'
+	from '/Users/radhakrishnan/Documents/eclipse/workspace/Boot-Rest-Angular/src/main/webapp/index.html'
+	into '/Users/radhakrishnan/Documents/Application-Development/Angular-Boot-Rest/complete/src/main/webapp'
+	println 'Copied'
+}
+
+task('copyLogtask',type:Copy){
+	from '/Users/radhakrishnan/Documents/eclipse/workspace/Boot-Rest-Angular/src/resources/log4j.xml'
+	from '/Users/radhakrishnan/Documents/eclipse/workspace/Boot-Rest-Angular/src/resources/application.properties'
+	into '/Users/radhakrishnan/Documents/Application-Development/Angular-Boot-Rest/complete/src/main/resources'
+}
+
+task ('copyJavatask',type:Copy) {
+	from '/Users/radhakrishnan/Documents/eclipse/workspace/Boot-Rest-Angular/src/rest/controller'
+	into '/Users/radhakrishnan/Documents/Application-Development/Angular-Boot-Rest/complete/src/main/java/rest/controller'
+	include '**/*.java'
+	println 'Copied'
+}
+
+tasks.withType(Copy) {
+	eachFile { println it.file }
+}
+copytask.dependsOn cleanTask
+//copyLogtask.dependsOn copytask
+copyJavatask.dependsOn copytask
+compileJava.dependsOn copyJavatask
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
