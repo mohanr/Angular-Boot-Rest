@@ -130,6 +130,11 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',['ngTable
 		    function getEditableBookService() {
 		        var editablebook = EditBookService.getEditableBookService();
 		        var editablebookdetails = editablebook.pop();
+		        
+         		if( !editablebookdetails ){
+         			$location.path("/"); // path not hash
+         			return;
+		        }
 		        console.log('Edit service is called [%s][%s][%s][%s]',
 		                    editablebookdetails.genre,
 		                    editablebookdetails.author,
@@ -188,9 +193,12 @@ var librarysystemcontroller = angular.module('librarysystemcontroller',['ngTable
 							$scope.genre = '';
 							$scope.title = '';
 							$scope.author = '';
-						})
+ 				    		$scope.successfuledit = true;
+ 						})
 						.error(function(data, status, headers, config) {
 							console.log('error editing book: data = ' , data);
+				     		$scope.failededit = true;
+ 
 						});
       		}
       		console.log('Broadcast');
