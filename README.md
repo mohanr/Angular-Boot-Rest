@@ -25,3 +25,4 @@ Logging tools.
 
 1. slf4j for the Java code
 2. 'console' log API for JavaScript.
+3. resources/application.properties has the location where the log file is written which can be changed.
