@@ -59,10 +59,10 @@ task ('copyJavatask',type:Copy) {
 tasks.withType(Copy) {
 	eachFile { println it.file }
 }
-copytask.dependsOn cleanTask
+//copytask.dependsOn cleanTask
 //copyLogtask.dependsOn copytask
-copyJavatask.dependsOn copytask
-compileJava.dependsOn copyJavatask
+//copyJavatask.dependsOn copytask
+//compileJava.dependsOn copyJavatask
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
