@@ -1,1 +1,1 @@
-web: java -Dserver.port=9001 -jar target/*.jar
+web: java -jar --port $PORT target/*.jar
