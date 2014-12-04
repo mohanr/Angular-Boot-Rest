@@ -8,7 +8,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
     }
 }
-mainClassName = "rest.controller.Application"
+mainClassName = "Application"
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
