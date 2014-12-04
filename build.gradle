@@ -8,12 +8,12 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.8.RELEASE")
     }
 }
-mainClassName = "Application"
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
+mainClassName = "Application"
 
 jar {
     baseName = 'Angular-Boot-Rest'
